@@ -6,38 +6,53 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/05/19 13:29:46 by eclark           ###   ########.fr       */
+/*   Updated: 2022/05/26 11:53:55 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 void	read_file(int fd)
 {
-	char	*buffer;
-	/*read from fd to buffer variable
-	*/	
+	static char 	*read_line;
+	char			*buffer;
+	int				res;
+
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	res = 1;
+	while (res != 0)
+	{
+		res = read(fd, &buffer, BUFFER_SIZE);
+		if (res == -1)
+			return (NULL);
+		while (buffer != '\n')
+		{
+			strjoin(read_line, buffer);
+		}
+
+	}
 }
 
 char	return_line(int fd)
 {
-
-}
-
-char	save_char(int fd)
-{
-
+	/*join lines together? using strjoin*/
 }
 
 char	*get_next_line(int fd)
 {
+	char	*buffer;
+
 	if ((fd < 0) || (BUFFER_SIZE <= 0))
 	{
 		return (NULL);
 	}
-	/*malloc to allocate space for lines
-	*read from line
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (buffer == NULL)
+	{
+		return (NULL);
+	}
+	readfile(fd);
+	/*read from line
 	*return line/append lines to eachother
 	*free allocated space
 	*/
 }
-
-
