@@ -6,35 +6,51 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/05/26 11:53:55 by eclark           ###   ########.fr       */
+/*   Updated: 2022/05/30 15:08:47 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "get_next_line.h"
 
-
-void	read_file(int fd)
+void	read_file(int fd, char *buffer)
 {
 	static char 	*read_line;
-	char			*buffer;
 	int				res;
 
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	res = 1;
-	while (res != 0)
+	while (res != 0) /*while read hasn't reached eof keep looping*/
 	{
 		res = read(fd, &buffer, BUFFER_SIZE);
 		if (res == -1)
 			return (NULL);
-		while (buffer != '\n')
-		{
-			strjoin(read_line, buffer);
-		}
-
-	}
+		/*res shows if read function has worked - if not return null*/
+		read_line  = ft_strjoin(buffer, read_line);
+		if (ft_strchr(read_line, '\n')
+		   res == 0;
+		/*if read_line contains a \n end the reading loop -- use substr??*/
+	}	
 }
 
-char	return_line(int fd)
+/*called when there is a \n in read_file ir eof*/
+char	return_line(static char *read_line)
 {
-	/*join lines together? using strjoin*/
+	int		len;
+	char	str;
+	
+	len = 0;
+	while (read_line[len] != '\n')
+	{
+		len++;
+	}
+
+}
+
+
+char	extra_char(static char	*read_line)
+{
+	/*measure amount of characters after \n using strlen?
+	 *malloc amount  of characters to str
+	 *copy and add /0, return str*/
+
 }
 
 char	*get_next_line(int fd)
@@ -50,9 +66,9 @@ char	*get_next_line(int fd)
 	{
 		return (NULL);
 	}
-	readfile(fd);
 	/*read from line
 	*return line/append lines to eachother
 	*free allocated space
 	*/
+	read_file = (fd, buffer);
 }

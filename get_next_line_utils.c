@@ -6,7 +6,7 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:36:34 by eclark            #+#    #+#             */
-/*   Updated: 2022/05/26 11:56:35 by eclark           ###   ########.fr       */
+/*   Updated: 2022/05/30 14:55:05 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -15,7 +15,8 @@ int	ft_strlen(char *c)
 {
 	int i;
 
-	while (c != '\0')
+	i = 0;
+	while (c[i] != '\0')
 	{
 		i++;
 	}
@@ -41,4 +42,21 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		ptr[i++] = *s2++;
 	ptr[t_len - 1] = '\0';
 	return (ptr);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+		{
+			return ((char *)s);
+		}
+		s++;
+	}
+	if (c == '\0')
+	{
+		return ((char *)s);
+	}
+	return ((char *) NULL);
 }
