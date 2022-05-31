@@ -6,12 +6,12 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:36:34 by eclark            #+#    #+#             */
-/*   Updated: 2022/05/30 14:55:05 by eclark           ###   ########.fr       */
+/*   Updated: 2022/05/31 14:48:07 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-int	ft_strlen(char *c)
+int	ft_strlen(char const *c)
 {
 	int i;
 
@@ -59,4 +59,46 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	}
 	return ((char *) NULL);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	srcsize;
+
+	i = 0;
+	if (src == 0 || dst == 0)
+		return (0);
+	if (dstsize > 0)
+	{
+		while (src[i] != '\0' && i < (dstsize - 1))
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	srcsize = ft_strlen((char *)src);
+	return (srcsize);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	if (!s)
+		return (0);
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	i = start;
+	j = 0;
+	while (i < ft_strlen(s) && j < len)
+	{
+		str[j++] = s[i++];
+	}
+	str[j] = '\0';
+	return (str);
 }

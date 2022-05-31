@@ -6,7 +6,7 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/05/30 15:08:47 by eclark           ###   ########.fr       */
+/*   Updated: 2022/05/31 14:53:06 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -23,39 +23,57 @@ void	read_file(int fd, char *buffer)
 		if (res == -1)
 			return (NULL);
 		/*res shows if read function has worked - if not return null*/
+		if (res == 0)
+			break;
 		read_line  = ft_strjoin(buffer, read_line);
 		if (ft_strchr(read_line, '\n')
-		   res == 0;
-		/*if read_line contains a \n end the reading loop -- use substr??*/
+			break;
 	}	
 }
 
 /*called when there is a \n in read_file ir eof*/
-char	return_line(static char *read_line)
+char	return_line(char *str)
 {
 	int		len;
-	char	str;
 	
 	len = 0;
-	while (read_line[len] != '\n')
+	while (read_line[len] != '\n' || read_line[len] != '\0') 
 	{
 		len++;
 	}
-
+	str = malloc((len + 1) * sizeof(char));
+	if (!str)
+		return (NULL)
+	
+	return (str);
 }
 
 
-char	extra_char(static char	*read_line)
+char	extra_char(char	*extra)
 {
 	/*measure amount of characters after \n using strlen?
 	 *malloc amount  of characters to str
 	 *copy and add /0, return str*/
+	int i;
+	int	len;
 
+	i = 0;
+	while (*read_line != '\n')
+	{
+		i++;
+	}
+	len = (ft_strlen(read_line) - i) + 1;
+	extra = malloc(len * sizeof(char));
+	if (!extra)
+		return (NULL);
+	extra = ft_substr(read_line, i, len);
 }
 
 char	*get_next_line(int fd)
 {
 	char	*buffer;
+	char	*str;
+	char	*extra;
 
 	if ((fd < 0) || (BUFFER_SIZE <= 0))
 	{
