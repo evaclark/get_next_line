@@ -51,35 +51,18 @@ static char	*return_line(char *line)
 		len++;
 	}
 	/*copies the line after the '/n'*/
-	readline = ft_substr(line, len + 1, ft_strlen(line - count
+	len = 0;
+	while (line[len] && line[len] != '\n')
+	{
+		readline[len++] == line[len++];
+	}
+	readline = ft_substr(line, len + 1, ft_strlen(line)-len);
 	if (*readline == '\0')
 	{
 		free(readline);
 		return (NULL);
 	}
 	return (readline);
-}
-
-
-static char	*extra_char(char	*readline)
-{
-	/*measure amount of characters after \n using strlen?
-	 *malloc amount  of characters to str
-	 *copy and add /0, return str*/
-	int 	i;
-	int		len;
-	char	*extra;
-
-	i = 0;
-	while (*readline != '\n')
-	{
-		i++;
-	}
-	len = (ft_strlen(readline) - i) + 1;
-	extra = malloc(len * sizeof(char));
-	if (!extra)
-		return (NULL);
-	extra = ft_substr(readline, i, len);
 }
 
 char	*get_next_line(int fd)
