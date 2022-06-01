@@ -6,15 +6,15 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/05/31 14:53:06 by eclark           ###   ########.fr       */
+/*   Updated: 2022/06/01 11:59:29 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-void	read_file(int fd, char *buffer)
+static char	read_file(int fd, char *buffer, char *readline)
 {
-	static char 	*read_line;
-	int				res;
+	int		res;
+	char	*temp;
 
 	res = 1;
 	while (res != 0) /*while read hasn't reached eof keep looping*/
@@ -25,10 +25,13 @@ void	read_file(int fd, char *buffer)
 		/*res shows if read function has worked - if not return null*/
 		if (res == 0)
 			break;
-		read_line  = ft_strjoin(buffer, read_line);
-		if (ft_strchr(read_line, '\n')
+		temp = readline;
+		readline = ft_strjoin(buffer, temp);
+		free(temp);
+		if (ft_strchr(readline, '\n')
 			break;
-	}	
+	}
+	return (readline);
 }
 
 /*called when there is a \n in read_file ir eof*/
@@ -49,31 +52,32 @@ char	return_line(char *str)
 }
 
 
-char	extra_char(char	*extra)
+char	extra_char(char	*readline)
 {
 	/*measure amount of characters after \n using strlen?
 	 *malloc amount  of characters to str
 	 *copy and add /0, return str*/
-	int i;
-	int	len;
+	int 	i;
+	int		len;
+	char	*extra;
 
 	i = 0;
-	while (*read_line != '\n')
+	while (*readline != '\n')
 	{
 		i++;
 	}
-	len = (ft_strlen(read_line) - i) + 1;
+	len = (ft_strlen(readline) - i) + 1;
 	extra = malloc(len * sizeof(char));
 	if (!extra)
 		return (NULL);
-	extra = ft_substr(read_line, i, len);
+	extra = ft_substr(readline, i, len);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*buffer;
-	char	*str;
-	char	*extra;
+	char		*buffer;
+	char		*line;
+	static char	*readline;
 
 	if ((fd < 0) || (BUFFER_SIZE <= 0))
 	{
@@ -84,9 +88,14 @@ char	*get_next_line(int fd)
 	{
 		return (NULL);
 	}
-	/*read from line
-	*return line/append lines to eachother
-	*free allocated space
-	*/
-	read_file = (fd, buffer);
+	/*read from line*/
+	line = read_file(fd, buffer, readline);
+	/*return line/append lines to eachother*/
+
+	/*free allocated space*/
+	if (*line == '\0')
+	{
+		free(line);
+		return (NULL);
+	}
 }
