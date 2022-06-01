@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-static char	read_file(int fd, char *buffer, char *readline)
+static char	*read_file(int fd, char *buffer, char *readline)
 {
 	int		res;
 	char	*temp;
@@ -27,7 +27,11 @@ static char	read_file(int fd, char *buffer, char *readline)
 			break;
 		temp = readline;
 		readline = ft_strjoin(buffer, temp);
-		free(temp);
+		if (*temp == '\0')
+		{
+			free(temp);
+			temp = (NULL);
+		}
 		if (ft_strchr(readline, '\n')
 			break;
 	}
@@ -35,24 +39,29 @@ static char	read_file(int fd, char *buffer, char *readline)
 }
 
 /*called when there is a \n in read_file ir eof*/
-char	return_line(char *str)
+static char	*return_line(char *line)
 {
 	int		len;
+	char		*readline;
 	
 	len = 0;
-	while (read_line[len] != '\n' || read_line[len] != '\0') 
+	/*finds the newline / eof*/
+	while (line[len] != '\n' || line[len] != '\0') 
 	{
 		len++;
 	}
-	str = malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL)
-	
-	return (str);
+	/*copies the line after the '/n'*/
+	readline = ft_substr(line, len + 1, ft_strlen(line - count
+	if (*readline == '\0')
+	{
+		free(readline);
+		return (NULL);
+	}
+	return (readline);
 }
 
 
-char	extra_char(char	*readline)
+static char	*extra_char(char	*readline)
 {
 	/*measure amount of characters after \n using strlen?
 	 *malloc amount  of characters to str
