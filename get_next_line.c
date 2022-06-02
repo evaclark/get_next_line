@@ -26,18 +26,20 @@ static char	*read_file(int fd, char *buffer, char *readline)
 	res = 1;
 	while (res != 0)
 	{
-		res = read(fd, &buffer, BUFFER_SIZE);
+		res = read(fd, buffer, BUFFER_SIZE);
 		if (res == -1)
 			return (NULL);
 		if (res == 0)
 			break ;
-		temp = readline;
-		readline = ft_strjoin(buffer, temp);
-		if (*temp == '\0')
+		buffer[res] = '\0';
+		if (!readline)
 		{
-			free(temp);
-			temp = (NULL);
+			readline = ft_strdup("");
 		}
+		temp = readline;
+		readline = ft_strjoin(temp, buffer);
+		free(temp);
+		temp = (NULL);
 		if (ft_strchr(readline, '\n'))
 			break ;
 	}
@@ -56,7 +58,7 @@ static char	*return_line(char *line)
 	char	*readline;
 
 	len = 0;
-	while (line[len] != '\n' || line[len] != '\0')
+	while (line[len] != '\n' && line[len] != '\0')
 	{
 		len++;
 	}
@@ -66,7 +68,7 @@ static char	*return_line(char *line)
 	if (*readline == '\0')
 	{
 		free(readline);
-		return (NULL);
+		readline = (NULL);
 	}
 	line [len + 1] = '\0';
 	return (readline);
@@ -94,8 +96,8 @@ char	*get_next_line(int fd)
 	}
 	line = read_file(fd, buffer, readline);
 	free(buffer);
-	return (NULL);
-	if (*line == '\0')
+	buffer = NULL;
+	if (!line)
 	{
 		return (NULL);
 	}

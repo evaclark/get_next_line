@@ -81,3 +81,33 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[j] = '\0';
 	return (str);
 }
+
+char	*ft_strdup(const char *s1)
+{
+	size_t	len;
+	char	*ptr;
+
+	len = ft_strlen(s1) + 1;
+	ptr = malloc(sizeof(*s1) * len);
+	ptr = ft_memcpy(ptr, s1, len);
+	return (ptr);
+}
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t			i;
+	unsigned char	*cdst;
+	unsigned char	*csrc;
+
+	cdst = (unsigned char *)dst;
+	csrc = (unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		*cdst = *csrc;
+		cdst++;
+		csrc++;
+		i++;
+	}
+	return (dst);
+}
