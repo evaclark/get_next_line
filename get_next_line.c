@@ -60,6 +60,8 @@ static char	*return_line(char *line)
 	{
 		len++;
 	}
+	if(!line[1] || !line[len])
+		return (NULL);
 	readline = ft_substr(line, len + 1, ft_strlen(line)-len);
 	if (*readline == '\0')
 	{
@@ -91,12 +93,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = read_file(fd, buffer, readline);
-	/**/
-	readline = return_line(line);
+	free(buffer);
+	return (NULL);
 	if (*line == '\0')
 	{
-		free(line);
 		return (NULL);
 	}
+	readline = return_line(line);
 	return (line);
 }
