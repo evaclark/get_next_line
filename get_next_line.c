@@ -6,25 +6,31 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/06/01 11:59:29 by eclark           ###   ########.fr       */
+/*   Updated: 2022/06/02 11:53:55 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 
+/*while loop for while read function hasn't reached eof
+ * if read malfuctions return null
+ * if there is nothing to read break
+ * assign readline contents to *temp in order to not overwite using strjoin
+ * if temp contains '\0' indicating eof free remaining space
+ * if there is a '\n' readline break from the reading function
+ * returns the read line*/
 static char	*read_file(int fd, char *buffer, char *readline)
 {
 	int		res;
 	char	*temp;
 
 	res = 1;
-	while (res != 0) /*while read hasn't reached eof keep looping*/
+	while (res != 0)
 	{
 		res = read(fd, &buffer, BUFFER_SIZE);
 		if (res == -1)
 			return (NULL);
-		/*res shows if read function has worked - if not return null*/
 		if (res == 0)
-			break;
+			break ;
 		temp = readline;
 		readline = ft_strjoin(buffer, temp);
 		if (*temp == '\0')
@@ -32,29 +38,27 @@ static char	*read_file(int fd, char *buffer, char *readline)
 			free(temp);
 			temp = (NULL);
 		}
-		if (ft_strchr(readline, '\n')
-			break;
+		if (ft_strchr(readline, '\n'))
+			break ;
 	}
 	return (readline);
 }
 
-/*called when there is a \n in read_file ir eof*/
+/*called when there is a \n in read_file or eof
+ * finds newline/eof indicator
+ * copies line until the '\n'
+ * saves remaining text after line using substr
+ * frees space if readline is at the eof
+ * returns readline, now where it needs to begin again*/
 static char	*return_line(char *line)
 {
 	int		len;
-	char		*readline;
-	
+	char	*readline;
+
 	len = 0;
-	/*finds the newline / eof*/
-	while (line[len] != '\n' || line[len] != '\0') 
+	while (line[len] != '\n' || line[len] != '\0')
 	{
 		len++;
-	}
-	/*copies the line after the '/n'*/
-	len = 0;
-	while (line[len] && line[len] != '\n')
-	{
-		readline[len++] == line[len++];
 	}
 	readline = ft_substr(line, len + 1, ft_strlen(line)-len);
 	if (*readline == '\0')
@@ -62,9 +66,15 @@ static char	*return_line(char *line)
 		free(readline);
 		return (NULL);
 	}
+	line [len + 1] = '\0';
 	return (readline);
 }
 
+/*first checks if fd exists & there isnt a negative buffer size
+ * then allocates size for buffer + 1 for '\0'
+ * reads from file, inputs into line
+ * returns just one line from this string (if there was excess)
+ * frees allocated space in line for next line*/
 char	*get_next_line(int fd)
 {
 	char		*buffer;
@@ -80,14 +90,13 @@ char	*get_next_line(int fd)
 	{
 		return (NULL);
 	}
-	/*read from line*/
 	line = read_file(fd, buffer, readline);
-	/*return line/append lines to eachother*/
-
-	/*free allocated space*/
+	/**/
+	readline = return_line(line);
 	if (*line == '\0')
 	{
 		free(line);
 		return (NULL);
 	}
+	return (line);
 }
