@@ -6,10 +6,10 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:36:34 by eclark            #+#    #+#             */
-/*   Updated: 2022/06/10 13:09:41 by eclark           ###   ########.fr       */
+/*   Updated: 2022/06/10 13:35:22 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char const *c)
 {

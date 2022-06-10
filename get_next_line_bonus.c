@@ -6,10 +6,10 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/06/10 13:31:46 by eclark           ###   ########.fr       */
+/*   Updated: 2022/06/10 13:34:55 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 /*while loop for while read function hasn't reached eof
  * if read malfuctions return null
