@@ -6,7 +6,7 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 16:36:34 by eclark            #+#    #+#             */
-/*   Updated: 2022/06/10 13:09:41 by eclark           ###   ########.fr       */
+/*   Updated: 2022/06/03 11:23:10 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -67,35 +67,30 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 char	*ft_strdup(const char *s1)
 {
-	int		i;
-	int		len;
+	size_t	len;
 	char	*ptr;
 
-	i = 0;
 	len = ft_strlen(s1) + 1;
 	ptr = malloc(sizeof(*s1) * len);
-	while (i < len)
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
-	ptr[i] = '\0';
+	ptr = ft_memcpy(ptr, s1, len);
 	return (ptr);
 }
 
-char	*ft_strchr(const char *s, int c)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	while (*s != '\0')
+	size_t			i;
+	unsigned char	*cdst;
+	unsigned char	*csrc;
+
+	cdst = (unsigned char *)dst;
+	csrc = (unsigned char *)src;
+	i = 0;
+	while (i < n)
 	{
-		if (*s == c)
-		{
-			return ((char *)s);
-		}
-		s++;
+		*cdst = *csrc;
+		cdst++;
+		csrc++;
+		i++;
 	}
-	if (c == '\0')
-	{
-		return ((char *)s);
-	}
-	return ((char *) NULL);
+	return (dst);
 }

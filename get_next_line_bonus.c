@@ -5,20 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/17 16:35:54 by eclark            #+#    #+#             */
-/*   Updated: 2022/06/10 13:34:55 by eclark           ###   ########.fr       */
+/*   Created: 2022/06/15 13:37:53 by eclark            #+#    #+#             */
+/*   Updated: 2022/06/15 13:45:57 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return ((char *)s);
+		s++;
+	}
+	if (c == '\0')
+		return ((char *)s);
+	return ((char *) NULL);
+}
 
 /*while loop for while read function hasn't reached eof
  * if read malfuctions return null
  * if there is nothing to read break
- * assigns null to where the buffer has been read to, ending the string
- * if this is the first loop the readline string will be assigned an empty-
- * string ready to be filled
  * assign readline contents to *temp in order to not overwite using strjoin
- * free and nullify temp ready to be used in the next loop
+ * if temp contains '\0' indicating eof free remaining space
  * if there is a '\n' readline break from the reading function
  * returns the read line*/
 static char	*read_file(int fd, char *buffer, char *readline)
@@ -41,7 +52,7 @@ static char	*read_file(int fd, char *buffer, char *readline)
 		readline = ft_strjoin(temp, buffer);
 		free(temp);
 		temp = (NULL);
-		if (ft_strchr(readline, '\n'))
+		if (ft_strchr(buffer, '\n'))
 			return (readline);
 	}
 	return (readline);
@@ -49,14 +60,13 @@ static char	*read_file(int fd, char *buffer, char *readline)
 
 /*called when there is a \n in read_file or eof
  * finds newline/eof indicator
- * checks to see if there is anything in line - if not return null
- * copies line until the '\n'/'\0' - from the position the function-
- * was called
+ * copies line until the '\n'
+ * saves remaining text after line using substr
  * frees space if readline is at the eof
  * returns readline, now where it needs to begin again*/
 static char	*return_line(char *line)
 {
-	int		len;
+	size_t	len;
 	char	*readline;
 
 	len = 0;
@@ -64,23 +74,21 @@ static char	*return_line(char *line)
 	{
 		len++;
 	}
-	if (!line[1] || !line[len])
+	if (line[1] == '\0' || line[len] == '\0')
 		return (NULL);
 	readline = ft_substr(line, len + 1, ft_strlen(line)-len);
 	if (*readline == '\0')
 	{
 		free(readline);
-		readline = NULL;
+		readline = (NULL);
 	}
 	line [len + 1] = '\0';
 	return (readline);
 }
 
 /*first checks if fd exists & there isnt a negative buffer size
- * then allocates size for buffer + 1 for '\0' - checks malloc worked
+ * then allocates size for buffer + 1 for '\0'
  * reads from file, inputs into line
- * frees the buffer to be called again
- * checks if there is anything to return, if not return null
  * returns just one line from this string (if there was excess)
  * frees allocated space in line for next line*/
 char	*get_next_line(int fd)
@@ -93,8 +101,8 @@ char	*get_next_line(int fd)
 	{
 		return (NULL);
 	}
-	buffer = (char *)malloc(sizeof * buffer * (BUFFER_SIZE + 1));
-	if (!buffer)
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (buffer == NULL)
 	{
 		return (NULL);
 	}
@@ -107,22 +115,4 @@ char	*get_next_line(int fd)
 	}
 	readline = return_line(line);
 	return (line);
-}
-
-int main (int argc, char **argv)
-{
-	int	fd;
-	char	*line;
-
-	(void)argc;
-	fd = open(argv[1], O_RDONLY);
-	line = "";
-
-	while (line != NULL)
-	{
-		line  = get_next_line(fd);
-		printf("%s", line);
-	}
-	fd = close(fd);
-	return 0;
 }
