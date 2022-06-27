@@ -6,24 +6,11 @@
 /*   By: eclark <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:37:53 by eclark            #+#    #+#             */
-/*   Updated: 2022/06/15 13:38:16 by eclark           ###   ########.fr       */
+/*   Updated: 2022/06/27 12:55:02 by eclark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s != '\0')
-	{
-		if (*s == c)
-			return ((char *)s);
-		s++;
-	}
-	if (c == '\0')
-		return ((char *)s);
-	return ((char *) NULL);
-}
 
 /*while loop for while read function hasn't reached eof
  * if read malfuctions return null
@@ -42,18 +29,18 @@ static char	*read_file(int fd, char *buffer, char *readline)
 	{
 		res = read(fd, buffer, BUFFER_SIZE);
 		if (res == -1)
-			return (NULL);
+			return (0);
 		else if (res == 0)
-			return (readline);
+			break ;
 		buffer[res] = '\0';
 		if (!readline)
-			readline = ft_strdup("");
+			readline = ft_strdup();
 		temp = readline;
 		readline = ft_strjoin(temp, buffer);
 		free(temp);
-		temp = (NULL);
+		temp = NULL;
 		if (ft_strchr(buffer, '\n'))
-			return (readline);
+			break ;
 	}
 	return (readline);
 }
@@ -71,16 +58,14 @@ static char	*return_line(char *line)
 
 	len = 0;
 	while (line[len] != '\n' && line[len] != '\0')
-	{
 		len++;
-	}
-	if (line[1] == '\0' || line[len] == '\0')
-		return (NULL);
+	if (line[len] == '\0')
+		return (0);
 	readline = ft_substr(line, len + 1, ft_strlen(line)-len);
 	if (*readline == '\0')
 	{
 		free(readline);
-		readline = (NULL);
+		readline = NULL;
 	}
 	line [len + 1] = '\0';
 	return (readline);
@@ -97,15 +82,11 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*readline;
 
-	if ((fd < 0) || (BUFFER_SIZE <= 0))
+	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
-		return (NULL);
+		return (0);
 	}
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buffer == NULL)
-	{
-		return (NULL);
-	}
 	line = read_file(fd, buffer, readline);
 	free(buffer);
 	buffer = NULL;
